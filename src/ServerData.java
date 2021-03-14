@@ -43,13 +43,11 @@ public class ServerData {
         if (o == null || getClass() != o.getClass()) return false;
         ServerData that = (ServerData) o;
         return port == that.port &&
-                load == that.load &&
-                lastUpdate == that.lastUpdate &&
-                Objects.equals(host, that.host);
+                host.equals(that.host);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(host, port, load, lastUpdate);
+        return Objects.hash(host, port);
     }
 }

@@ -4,11 +4,12 @@ import java.net.DatagramSocket;
 import java.net.SocketException;
 
 public class LoadReceiver implements Runnable {
-    private final static int UDP_PORT = 4000;
+    private int udp_port;
     private final int PACKET_SIZE = 1024;
     ServerSource serverSource;
 
-    public LoadReceiver(ServerSource serverSource) {
+    public LoadReceiver(int udp_port, ServerSource serverSource) {
+        this.udp_port = udp_port;
         this.serverSource = serverSource;
     }
 
@@ -16,7 +17,7 @@ public class LoadReceiver implements Runnable {
     public void run() {
         DatagramSocket udpSocket = null;
         try {
-            udpSocket = new DatagramSocket(UDP_PORT);
+            udpSocket = new DatagramSocket(udp_port);
         } catch (SocketException e) {
             e.printStackTrace();
         }
@@ -28,12 +29,15 @@ public class LoadReceiver implements Runnable {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            int serverPort = packetIn.getPort();
-            String host = packetIn.getAddress().getHostName();
-            String load = new String(dataIn, 0, packetIn.getLength());
-            serverSource.update(new ServerData(host, serverPort, Integer.parseInt(load), System.currentTimeMillis()),
-                    Integer.parseInt(load));
+            getServerData(packetIn, dataIn);
         }
+    }
 
+    void getServerData(DatagramPacket packetIn, byte[] dataIn) {
+        int serverPort = packetIn.getPort();
+        String host = packetIn.getAddress().getHostName();
+        String load = new String(dataIn, 0, packetIn.getLength());
+        serverSource.update(new ServerData(host, serverPort, Integer.parseInt(load), System.currentTimeMillis()),
+                Integer.parseInt(load));
     }
 }

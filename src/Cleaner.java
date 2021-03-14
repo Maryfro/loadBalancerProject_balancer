@@ -12,7 +12,7 @@ public class Cleaner implements Runnable {
         while (true) {
             source.removeUnused(timestamp);
             try {
-                Thread.sleep(5000);
+                Thread.sleep(timestamp);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

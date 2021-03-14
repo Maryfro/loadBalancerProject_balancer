@@ -1,7 +1,7 @@
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.PriorityQueue;
 
 public class ServerSource {
-    ConcurrentLinkedQueue<ServerData> source;
+    PriorityQueue<ServerData> source;
 
     synchronized void update(ServerData serverData, int load) {
         if (!source.contains(serverData)) {

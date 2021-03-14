@@ -2,30 +2,33 @@ import java.io.IOException;
 import java.net.*;
 
 public class OptimalPortSender implements Runnable {
-    private final static int GATEWAY_PORT = 3001;
-    // what is InetAddress here?
-    private final static String UDP_HOST = "localhost";
-    ServerSource source;
+    private  int gateway_port;
+    private  String gateway_host;
+    private ServerSource source;
+    private int timestampToSend;
 
-    public OptimalPortSender(ServerSource source) {
+
+    public OptimalPortSender(int gateway_port, String gateway_host, ServerSource source, int timestampToSend) {
+        this.gateway_port = gateway_port;
+        this.gateway_host = gateway_host;
         this.source = source;
+        this.timestampToSend = timestampToSend;
     }
 
     @Override
     public void run() {
         try {
-            //is it known from gateway?
-            InetAddress inetAddress = InetAddress.getByName(UDP_HOST);
+            InetAddress inetAddress = InetAddress.getByName(gateway_host);
             DatagramSocket udpSocket = new DatagramSocket();
+            while (true) {
             String portAndHost = source.getBest().getHost() + " : " + source.getBest().getPort();
             byte[] outputData = portAndHost.getBytes();
             DatagramPacket packetOut = new DatagramPacket(outputData,
                     outputData.length,
                     inetAddress,
-                    GATEWAY_PORT);
-            while (true) {
-                Thread.sleep(100);
+                    gateway_port);
                 udpSocket.send(packetOut);
+                Thread.sleep(timestampToSend);
             }
 
         } catch (IOException | InterruptedException e) {
