@@ -50,4 +50,16 @@ public class ServerData {
     public int hashCode() {
         return Objects.hash(host, port);
     }
+
+    @Override
+    public String toString() {
+        return "ServerData{" +
+                "host='" + host + '\'' +
+                ", port=" + port +
+                ", load=" + load +
+                ", lastUpdate=" + lastUpdate +
+                '}';
+    }
+
+
 }

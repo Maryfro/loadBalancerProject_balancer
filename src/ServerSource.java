@@ -1,7 +1,9 @@
+import java.util.ArrayDeque;
 import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class ServerSource {
-    PriorityQueue<ServerData> source = new PriorityQueue<>();
+    Queue<ServerData> source = new ArrayDeque<>();
 
     synchronized void update(ServerData serverData, int load) {
         if (!source.contains(serverData)) {

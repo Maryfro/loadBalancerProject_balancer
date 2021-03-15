@@ -15,20 +15,18 @@ public class LoadReceiver implements Runnable {
 
     @Override
     public void run() {
-        DatagramSocket udpSocket = null;
+        DatagramSocket udpSocket;
         try {
-            udpSocket = new DatagramSocket();
+            udpSocket = new DatagramSocket(udp_port);
         } catch (SocketException e) {
             e.printStackTrace();
+            return;
         }
         byte[] dataIn = new byte[PACKET_SIZE];
         DatagramPacket packetIn = new DatagramPacket(dataIn, PACKET_SIZE);
-                System.out.println("i am here line 27");
         while (true) {
             try {
-                System.out.println("line 29");
                 udpSocket.receive(packetIn);
-                System.out.println("line 31");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -42,7 +40,7 @@ public class LoadReceiver implements Runnable {
         String loadAndPort = new String(dataIn, 0, packetIn.getLength());
         String[] loadAndPortArr = loadAndPort.split(":");
         int load = Integer.parseInt(loadAndPortArr[0]);
-        System.out.println(load);
+        //System.out.println(load);
         int serverPort = Integer.parseInt(loadAndPortArr[1]);
         System.out.println(serverPort);
         serverSource.update(new ServerData(host, serverPort, load, System.currentTimeMillis()),
