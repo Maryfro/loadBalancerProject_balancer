@@ -1,6 +1,6 @@
 public class Cleaner implements Runnable {
-    int timestamp;
-    ServerSource source;
+   private  int timestamp;
+    private ServerSource source;
 
     public Cleaner(int timestamp, ServerSource source) {
         this.timestamp = timestamp;

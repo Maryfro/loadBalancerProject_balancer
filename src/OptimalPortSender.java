@@ -2,8 +2,8 @@ import java.io.IOException;
 import java.net.*;
 
 public class OptimalPortSender implements Runnable {
-    private  int gateway_port;
-    private  String gateway_host;
+    private int gateway_port;
+    private String gateway_host;
     private ServerSource source;
     private int timestampToSend;
 
@@ -21,12 +21,15 @@ public class OptimalPortSender implements Runnable {
             InetAddress inetAddress = InetAddress.getByName(gateway_host);
             DatagramSocket udpSocket = new DatagramSocket();
             while (true) {
-            String portAndHost = source.getBest().getHost() + " : " + source.getBest().getPort();
-            byte[] outputData = portAndHost.getBytes();
-            DatagramPacket packetOut = new DatagramPacket(outputData,
-                    outputData.length,
-                    inetAddress,
-                    gateway_port);
+                if (source == null) {
+                    continue;
+                }
+                String portAndHost = source.getBest().getHost() + " : " + source.getBest().getPort();
+                byte[] outputData = portAndHost.getBytes();
+                DatagramPacket packetOut = new DatagramPacket(outputData,
+                        outputData.length,
+                        inetAddress,
+                        gateway_port);
                 udpSocket.send(packetOut);
                 Thread.sleep(timestampToSend);
             }

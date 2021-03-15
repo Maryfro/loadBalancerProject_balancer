@@ -1,7 +1,7 @@
 import java.util.PriorityQueue;
 
 public class ServerSource {
-    PriorityQueue<ServerData> source;
+    PriorityQueue<ServerData> source = new PriorityQueue<>();
 
     synchronized void update(ServerData serverData, int load) {
         if (!source.contains(serverData)) {
@@ -13,7 +13,7 @@ public class ServerSource {
     }
 
     synchronized ServerData getBest() {
-        return source.stream().min((o1, o2) -> -(o1.getLoad() - o2.getLoad())).orElseThrow();
+        return source.stream().min((o1, o2) -> -(o1.getLoad() - o2.getLoad())).orElse(null);
     }
 
     synchronized void removeUnused(int millis) {
