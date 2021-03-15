@@ -21,9 +21,8 @@ public class OptimalPortSender implements Runnable {
             InetAddress inetAddress = InetAddress.getByName(gateway_host);
             DatagramSocket udpSocket = new DatagramSocket();
             while (true) {
-                if (source == null) {
+                if (source.getBest() == null)
                     continue;
-                }
                 String portAndHost = source.getBest().getHost() + " : " + source.getBest().getPort();
                 byte[] outputData = portAndHost.getBytes();
                 DatagramPacket packetOut = new DatagramPacket(outputData,
